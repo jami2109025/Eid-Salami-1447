@@ -71,6 +71,9 @@ input[type=text],textarea{
 input::placeholder,textarea::placeholder{color:rgba(255,248,231,.26);}
 input:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(240,192,64,.13);}
 
+/* ID field hint */
+.id-hint{font-size:.74rem;color:rgba(255,248,231,.35);margin-top:.28rem;display:block;}
+
 /* Buttons */
 .btn-main{
   width:100%;padding:.95rem;
@@ -181,6 +184,7 @@ input:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(24
 .cert-body{color:#4e342e;line-height:2;font-size:1.02rem;text-align:center;margin:1rem 0;}
 .cert-name{font-size:1.5rem;color:#1a237e;font-weight:700;display:block;border-bottom:1px solid #c8a84b;padding-bottom:.2rem;margin:.3rem 2rem;}
 .cert-amt{font-size:2rem;color:#b71c1c;font-weight:700;}
+.cert-id{font-size:.78rem;color:#795548;opacity:.7;display:block;margin-top:.2rem;}
 .cert-sigs{display:flex;justify-content:space-between;margin-top:1.4rem;padding-top:.9rem;border-top:1px solid rgba(139,90,0,.18);}
 .csig{text-align:center;font-size:.78rem;color:#795548;}
 .csig-line{width:75px;height:1px;background:#795548;margin:0 auto .25rem;}
@@ -225,8 +229,9 @@ input:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(24
     <div class="cert-body">
       এতদ্বারা প্রত্যয়ন করা যাইতেছে যে,
       <span class="cert-name" id="cName"></span>এই পবিত্র ঈদুল ফিতরের শুভলগ্নে
-      <span class="cert-amt" id="cAmt"></span>টাকা ঈদ সালামি প্রাপ্ত হইয়াছেন।
-      <br/><br/>
+      <span class="cert-amt" id="cAmt"></span> টাকা ঈদ সালামি প্রাপ্ত হইয়াছেন।
+      <span class="cert-id" id="cId"></span>
+      <br/>
       তিনি এই টাকায় কী করিবেন তাহা একমাত্র আল্লাহ জানেন।😤
     </div>
     <div class="cert-sigs">
@@ -244,8 +249,7 @@ input:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(24
   <div class="hdr">
     <span class="moon-ico">🌙</span>
     <h6 class="main-sub">✨ ইদের শুভেচ্ছাআআআআ✨</h6>
-    <h1 class="flabel">✨ তাকাব্বালাল্লাহু মিন্না ওয়া মিনকুম। (আল্লাহ আমাদের ও আপনাদের পক্ষ থেকে (নেক আমলসমূহ) কবুল করুন)✨</h1>
-  এই
+    <h1 class="flabel">✨ তাকাব্বালাল্লাহু মিন্না ওয়া মিনকুম। (আল্লাহ আমাদের ও আপনাদের পক্ষ থেকে (নেক আমলসমূহ) কবুল করুন)✨</h1>
   </div>
 
   <!-- Card -->
@@ -257,12 +261,18 @@ input:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(24
     <!-- Form -->
     <div id="formSec">
       <div class="fgroup">
-        <label class="flabel">🪪 আপকা নাম কিয়া হে?</label>
+        <label class="flabel">🪪 আপকা নাম কিয়া হে?</label>
         <input type="text" id="nameIn" placeholder="যেমন: জেমি, জামী..." maxlength="50"/>
       </div>
+
       <div class="fgroup">
-        <label class="flabel">🪪জনাব/জনাবা, আপনার পরিচয়?</label>
-        <textarea id="introIn" rows="3" placeholder="পরিচয় কি হ্যাঁ???"></textarea>
+        <label class="flabel">🔑Gimme ইওর আইডি <span style="color:rgba(255,248,231,.4);font-weight:400"></span></label>
+        <input type="text" id="idIn" placeholder="আইডি দ্যান দয়া কইরা।।" maxlength="30"/>
+      </div>
+
+      <div class="fgroup">
+        <label class="flabel">🪪জনাব/জনাবা, আপনার পরিচয়?</label>
+        <textarea id="introIn" rows="3" placeholder="পরিচয় কি হ্যাঁ???"></textarea>
       </div>
       <button class="btn-main" id="genBtn" onclick="generate()">🎰 সালামি মেশিন চালু হচ্ছে, ধৈর্যওওও!</button>
     </div>
@@ -277,7 +287,7 @@ input:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(24
         <div class="slot-glow"></div>
         <div class="slot-lbl">এই যে সালামি</div>
         <div class="slot-reel" id="slotReel">???</div>
-        <span class="slot-unit">বাংলাদেশি টাকা 💵</span>
+        <span class="slot-unit"> টাকা 💵</span>
       </div>
 
       <!-- Luck Meter -->
@@ -300,12 +310,12 @@ input:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(24
       <div class="rx-row" id="rxRow"></div>
 
       <!-- Negotiate -->
-      <button class="btn-neg" onclick="negotiate()">😤 এত কম?! আরেকটু বাড়ানো যায় না?!</button>
+      <button class="btn-neg" onclick="negotiate()">😤 এত কম?! আরেকটু বাড়ানো যায় না?!</button>
       <div class="neg-toast" id="negToast"></div>
 
       <!-- Certificate -->
       <button class="btn-cert" onclick="openCert()">📜 সি ইওর অফিসিয়াল সালামি সনদ! </button> <br> <br>
-      <h1 class="flabel">✨সনদের সস নিয়ে একাউন্ট নম্বরসহ ইনবক্স ফিলিইজ!✨</h1>
+      <span class="flabel">✨সনদের সস নিয়ে একাউন্ট নম্বরসহ ইনবক্স ফিলিইজ!✨</span>
 
     </div>
   </div>
@@ -358,7 +368,17 @@ function fanfare(){try{const a=ga();[[523,.12],[659,.12],[784,.12],[1047,.45]].f
 function buz(){try{const a=ga();const o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.frequency.value=150;o.type='sawtooth';g.gain.setValueAtTime(.1,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.3);o.start();o.stop(a.currentTime+.3);}catch(e){}}
 
 // ── Hash ──────────────────────────────────────────────────────
-function hsh(s){let h=5381;s=s.trim().toLowerCase();for(let i=0;i<s.length;i++){h=((h<<5)+h)+s.charCodeAt(i);h|=0;}return Math.abs(h);}
+// Now combines name + id so same name with different id → different result
+function hsh(name, id){
+  // Mix both strings with a separator so "ab"+"c" ≠ "a"+"bc"
+  const combined = name.trim().toLowerCase() + '|' + id.trim().toLowerCase();
+  let h = 5381;
+  for(let i = 0; i < combined.length; i++){
+    h = ((h << 5) + h) + combined.charCodeAt(i);
+    h |= 0;
+  }
+  return Math.abs(h);
+}
 
 // ── Data ──────────────────────────────────────────────────────
 const AMT=[.5,1,1.5,2];
@@ -373,7 +393,7 @@ const SHOP={
   .5: ['একটা লজেন্স 🍬','আধা-পিস পান 🌿','১ মিনিট কল 📞','সরিষার তেলের ফোঁটা 🌼'],
   1:  ['একটা আচার 🥒','একটা বিস্কুট 🍪','১০০ মিলি পানি 💧','একটা টফি 🍭'],
   1.5:['একটা মিষ্টি 🍮','আধা-কাপ চা ☕','একটা পেন্সিল ✏️','দুটো লজেন্স 🍬🍬'],
-  2:  ['একটা ফুচকা 🍡','১ গ্লাস শরবত 🥤','একটা বাতাসা 🌸','একটা পেয়ারা 🍐'],
+  2:  ['একটা MacBook 🍡','১ গ্লাস শরবত 🥤','একটা বাতাসা 🌸','একটা পেয়ারা 🍐'],
 };
 const RX={.5:['😂','💀','😭','🙃','😬'],1:['😐','🤷','🙂','👍','💸'],1.5:['😊','🤑','👌','✌️','🎉'],2:['🤩','🎊','🥳','🤑','👑']};
 const NEG=[
@@ -388,7 +408,7 @@ const NEG=[
 const FAKE=['0.50','1.00','1.50','2.00','0.50','1.50','1.00','2.00','0.50','2.00'];
 
 // ── State ──────────────────────────────────────────────────────
-let negIdx=0,curName='',curAmt=0;
+let negIdx=0,curName='',curId='',curAmt=0;
 
 // ── Spin ──────────────────────────────────────────────────────
 function spin(final,cb){
@@ -404,12 +424,26 @@ function spin(final,cb){
 
 // ── Generate ──────────────────────────────────────────────────
 function generate(){
-  const name=document.getElementById('nameIn').value.trim();
-  const intro=document.getElementById('introIn').value.trim();
-  if(!name){const el=document.getElementById('nameIn');el.style.borderColor='#e74c3c';el.focus();setTimeout(()=>el.style.borderColor='',1500);return;}
-  const h=hsh(name);
-  const amt=AMT[h%AMT.length];
-  curName=name;curAmt=amt;negIdx=0;
+  const name = document.getElementById('nameIn').value.trim();
+  const id   = document.getElementById('idIn').value.trim();
+
+  // Validate name
+  if(!name){
+    const el=document.getElementById('nameIn');
+    el.style.borderColor='#e74c3c';el.focus();
+    setTimeout(()=>el.style.borderColor='',1500);return;
+  }
+  // Validate id
+  if(!id){
+    const el=document.getElementById('idIn');
+    el.style.borderColor='#e74c3c';el.focus();
+    setTimeout(()=>el.style.borderColor='',1500);return;
+  }
+
+  // Hash uses BOTH name and id → same name, different id → different result
+  const h   = hsh(name, id);
+  const amt = AMT[h % AMT.length];
+  curName = name; curId = id; curAmt = amt; negIdx = 0;
 
   document.getElementById('rGreet').textContent=`🎰 মেশিন ঘুরছে ${name}... ধৈর্যওওও পিলিইইজ!`;
   document.getElementById('resPan').classList.add('show');
@@ -419,24 +453,15 @@ function generate(){
   document.getElementById('slotReel').textContent='???';
 
   spin(amt,()=>{
-    // Sound
     if(amt===2)fanfare();else if(amt===.5)sad();else coin();
     boom(amt===2);
 
-    // Luck
     setTimeout(()=>{document.getElementById('luckFill').style.width=LUCK[amt]+'%';document.getElementById('luckPct').textContent=LUCK[amt]+'%';},200);
 
-    // Roast
     const ro=ROAST[amt];document.getElementById('roastBox').textContent='"'+ro[h%ro.length]+'"';
-
-    // Shopping
     document.getElementById('shopChips').innerHTML=SHOP[amt].map((s,i)=>`<span class="chip" style="animation-delay:${i*.09}s">${s}</span>`).join('');
-
-    // Reactions
     document.getElementById('rxRow').innerHTML=RX[amt].map((e,i)=>`<span class="rx" style="animation-delay:${i*.07}s" onclick="this.style.transform='scale(2.2)';setTimeout(()=>this.style.transform='',320)">${e}</span>`).join('');
-
-    document.getElementById('rGreet').textContent=`🎉 ${name} , এই যে চূড়ান্ত সালামি:`;
-
+    document.getElementById('rGreet').textContent=`🎉 ${name}, এই যে চূড়ান্ত সালামি:`;
     document.getElementById('genBtn').disabled=false;
     setTimeout(()=>document.getElementById('resPan').scrollIntoView({behavior:'smooth',block:'nearest'}),100);
   });
@@ -453,12 +478,18 @@ function negotiate(){
 }
 
 // ── Certificate ──────────────────────────────────────────────
-function openCert(){document.getElementById('cName').textContent=curName;document.getElementById('cAmt').textContent=curAmt.toFixed(2);document.getElementById('certModal').classList.add('show');}
+function openCert(){
+  document.getElementById('cName').textContent=curName;
+  document.getElementById('cAmt').textContent=curAmt.toFixed(2);
+  document.getElementById('cId').textContent='আইডি : ' + curId;
+  document.getElementById('certModal').classList.add('show');
+}
 function closeCert(){document.getElementById('certModal').classList.remove('show');}
 function closeCertEv(e){if(e.target===document.getElementById('certModal'))closeCert();}
 
 // ── Keys ─────────────────────────────────────────────────────
-document.getElementById('nameIn').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('introIn').focus();});
+document.getElementById('nameIn').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('idIn').focus();});
+document.getElementById('idIn').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('introIn').focus();});
 document.getElementById('introIn').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.ctrlKey)generate();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCert();});
 </script>
